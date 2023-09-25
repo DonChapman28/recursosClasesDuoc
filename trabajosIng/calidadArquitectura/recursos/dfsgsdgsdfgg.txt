@@ -1,0 +1,12 @@
+definir alcances del proyecto-----------
+					|descripcion del proyecto
+requerimientos--------------------------
+funcionales y no funcionales
+    |
+    |
+plan de pruebas
+
+
+
+probar cmo admin y la prueba de asignacion de roles vwer si funciona.
+hacer pruebas por modulos

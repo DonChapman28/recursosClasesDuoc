@@ -1,0 +1,152 @@
+"lider de proyecto"
+
+|-lider tecnico(arquitecto)
+|-analista funcional 
+|-desarrolladores-|-fronted
+|		  |-backend
+|-administrador de sistemas
+|-QA
+
+ING SW
+clasico---> cascada,espiral,evolutivo
+agil------> scrum,kanban
+rup-------> uml|----> phillipe(creador) --->4+1 ------->4 vistas *logica
+	       |			|			 *proceso
+	       |			|			 *partes
+	       |			|			 *fisicas
+	       |			|
+	       |			|-->1 escenario----> *casos de uso
+	       |
+	       |
+	       |
+	       |----> brown --->c4 ---> drivers arquitectonicos <--"usa"--|persona|--> decisiones tecnicas
+					   ^	   |
+					   |	   |
+					   |	   |
+    especificacion de requerimientos >>----´	   `-->>Drivers arquitectonicos
+         (analista funcional)			        -casos de uso primario
+							-atributos de calidad (ISO 25010)--> eficiencia,desempeño,seguridad,fiabilidad,usabilidad	-restricciones 
+							                     
+ 
+analisis(drivers arquitectonicos)-diseño-implementacion-pruebas
+(4+1)
+
+*recursos*
+"canal yt(pelao nerd)" 
+"docker"
+"The playlist miniserie"
+
+iso25010
+
+lider tecnico de proyecto(arquitecto sw)
+
+artefactos de diseño
+-mockup
+-mer(modelo entidad relacion)
+-diagrama de flujo
+-diagrama de clase
+
+--------------------------------------------------------------------------------------------------------------------------------------------------
+[[[actividad XLS => ERS => .DOCX]]]
+
+requerimientos funcionales/requerimientos no funcionaleshttps://iso25000.com/images/figures/iso25010_c.png
+
+driver arquitectonicos: *casos de uso
+			*atributos de calidad ----------------------------------|---> arquiutecto <----------astefactos de diseño
+			*restricciones    					|
+										|
+iso25010 = https://iso25000.com/index.php/normas-iso-25000/iso-25010		|
+										|
+requerimientos no funcionales (iso25010) eficiencia/desempeño -|		|
+		(atributos de calidad)	usabilidad	       |		|
+					seguridad              | 		|
+					fiabilidad             |-----escenarios de calidad = tiene por objetivo materializar un atributo de calidad
+					adecuacion funcional   |
+					mantenibilidad         |
+					portabilidad           |
+					compatibilidad        -|
+
+escenarios de calidad
+*permite detallar la aplicacion o la materializacion de un atributo de calidad del proyecto y 
+tambien me permite probar o testear la arquitectura del proyecto.
+
+*permiten detallar en que manera y condiciones debe cumplirse el atributo de calidad.
+*ambiente =  es el ambiente o entorno donde esta funcionando(produccion, condiciones normales, pruebas)
+
+atributos de calidad "observables"-------> disponibilidad-funcionalidad-confidencialidad-desempeño
+		     "no observables"----> iteroperatibidad-portabilidad-escalabilidad-mantenibilidad
+
+estimulo
+entorno
+artefacto
+respuesta
+medida de la respuesta
+
+"enfoques arquitectonicos"
+-microservicios
+-rest
+
+"marco arquitectonico(ejemplos)"
+-java: mvc modelo/vista/controlador
+-django : mvt modelo/vista/template
+-ionic :  vista controlador
+
+----------------------------------------------
+estilos y patrones
+
+desarrllo de proyecto de sw------>req funcionales<----desarrollo
+	|				|
+	|				|
+	|------------------------>req no funcionales<---tecnico--->config. servidores
+					|			   config aplication
+					|			   conocimient framwork
+				    iso 25010			   conocimiento respaldo,alta disponibilidad
+
+estilos arquitectonicos: buenas practicas en el equipo de desarrollo y buscan definir la reslucion de un problema en particular
+componentes del sistema
+
+patrones arquitectonicos: 
+investigar el esquema de la arquitectura de sw de uber: 
+
+--------------------------------------------------
+el arquitecto necesita drivers arquitectonicos
+-casos de uso primario
+-atributos de calidad (ISO 25010)--> 
+-restricciones
+
+la arquitectura de sw pretende asegurar un producto de calidad
+-la necesidad del cliente
+-elementos tecnicos que necesito
+
+el proyecto que desarrolle debe minimizar las necesidades del cliente lo maximo posible
+
+Riesgos
+-mal levantamiento de requerimientos
+-no entender con claridad la iso25010 y sus alcances
+-no tener competencias tecnicas
+
+
+desviaciones de las neesidades: 
+
+verificaciones y validaciones
+daily meeting
+
+-----------------------------------------------------
+
+requerimientos------>casos de uso----------------->arquitecto----------->artefactos de diseño(4+1)	 
+	                       atributos de calidad                                                   logica------------------------------despliegue      DAS(documento arquitectura software)
+                                   restricciones                                                                   |           escenario/casos de uso         |
+                                                                                                                      procesos -----------------------------fisica
+                                  escenarios de calidad
+                                     ISO25010
+
+RUP(rational unified process)          analisis-------->deseño-------->implementacion------>pruebas
+  |
+  |
+  |
+4+1 ------>philippe krutchen
+C4  ------->simon brown
+
+RUP
+
+1 Inception

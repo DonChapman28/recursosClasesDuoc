@@ -1,0 +1,33 @@
+funcionales=acciones
+modelo de pruebas=casos de usos
+pruebas a requerimientos funcionales
+planificacion
+analisis y testing
+alcances de proyecto=objetivo del cliente
+alcances de pruebas=
+
+riesgos
+matriz de riesgo
+riesgo, mitigacion, plan de contingencia
+
+roles y responsabilidades
+jefe qa
+analista qa
+tester
+desarrollador
+
+condiciones de aceptacion
+
+casos de planes de pruebas
+apuntan a la calidad del sw
+
+datos de prueba
+
+casos estandar
+
+datos=
+-----------------------------------
+
+alcances
+
+requerimientos fy nf

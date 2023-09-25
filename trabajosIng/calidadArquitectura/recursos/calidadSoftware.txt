@@ -1,0 +1,65 @@
+xammp
+caso 1.3.3
+llenar 1.3.4
+
+tomar rquerimientos funcionales y no funcionales es para crear un producto de calidad, ademas
+en el proceso se hacen pruebas funcionales y se ennfocan en que el sw cumpla los requerimientos 
+y los no funcionales se centran en los atributos de calidad y caracteristicas del sistema.
+
+"pruebas de regresion"
+pruebas para verificar que paso y busca asegurar las modificaciones o cambios realizados
+en un sw no hayan introducido nuevos errores.
+
+"estres y rendimiento"
+son tipos de pruebas no funcionales, sirven para verificar cuellos de botella.
+prueb de carga>>> prueba de volumen>>> prueba de volumen>>> prueba de escalabilidad
+
+prueba de carga: evalua comportamiento y estabilidad
+		evalua capacidad maxima del sistema y verificar el comprtamiento en situaciones extremas
+
+prueba de volumen: datos
+
+prueba de escalabilidad: manejar futuros cambios
+
+prueba de rendimiento:
+
+--------
+"prueba smoke"
+pruebas estaticas
+estructura de codigo
+
+kritika singh
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

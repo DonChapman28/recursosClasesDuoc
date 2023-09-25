@@ -1,0 +1,39 @@
+poblacion = general
+muestra = parte o seccion de la poblacion ***si da cifra es muestra
+
+'variables'
+-cualitativo nominal = no lleva orden
+	    ordinal = lleva orden
+
+-cuantitativo continua = se le incluyen decimales ***cualquier dato que dependa de una unidad de medida pasa a ser continuo 
+	     discreta = no hay decimales
+
+*variable edad dede trabajarse como continua*
+
+frecuencia absoluta "f" ej: la cantidad de estudiantes
+
+frecuencia relativa puede ser en decimales y/o porcentajes "h" ej: el porcentaje en relacion al total
+
+resumen de estadistica
+
+actividad tablas de frecuencia
+
+
+
+n de intervalos redondear(1+3,+*log10(cuenta);0)
+amplitud  redondear.mas(rango/n de intervalos;cantidad de n decimales)
+
+tabla de amplitud
+
+las acumuladas o mayusculas son desde el el primer el valor hasta el que se pide
+
+agrupar
+
+rango = maximo-minimo
+
+
+
+
+
+
+

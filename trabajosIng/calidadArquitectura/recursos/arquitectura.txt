@@ -1,0 +1,47 @@
+"lider de proyecto"
+
+|-lider tecnico(arquitecto)
+|-analista funcional 
+|-desarrolladores-|-fronted
+|		  |-backend
+|-administrador de sistemas
+|-QA
+
+ING SW
+clasico---> cascada,espiral,evolutivo
+agil------> scrum,kanban
+rup-------> uml|----> phillipe(creador) --->4+1 ------->4 vistas *logica
+	       |			|			 *proceso
+	       |			|			 *partes
+	       |			|			 *fisicas
+	       |			|
+	       |			|-->1 escenario----> *casos de uso
+	       |
+	       |
+	       |
+	       |----> brown --->c4 ---> drivers arquitectonicos <--"usa"--|persona|--> decisiones tecnicas
+					   ^	   |
+					   |	   |
+					   |	   |
+    especificacion de requerimientos >>----´	   `-->>Drivers arquitectonicos
+         (analista funcional)			        -casos de uso primario
+							-atributos de calidad (ISO 25010)--> eficiencia,desempeño,seguridad,fiabilidad,usabilidad
+							-restricciones                      
+ 
+analisis(drivers arquitectonicos)-diseño-implementacion-pruebas
+(4+1)
+
+*recursos*
+"canal yt(pelao nerd)" 
+"docker"
+"The playlist miniserie"
+
+iso25010
+
+lider tecnico de proyecto(arquitecto sw)
+
+artefactos de diseño
+-mockup
+-mer(modelo entidad relacion)
+-diagrama de flujo
+-diagrama de clase
