@@ -1,0 +1,65 @@
+var b_id number(4);
+    
+declare
+    v_depto_id number(5) := :b_id;
+    
+    cursor cur_emp is select * from employees where department_id = v_depto_id;
+    cursor cur_deptos is select * from departments  where department_id = v_depto_id;
+    
+    type type_arr_porcentaje is varray(3) OF number(4,2);
+    v_arr_p type_arr_porcentaje;
+    
+    depto_encontrado boolean := false;
+    emp_encontrado boolean := false;
+    v_total_salarios number := 0;
+    depto_exception exception;
+    
+begin
+    v_arr_p := type_arr_porcentaje(1.01,1.02,1.05);
+    
+    for depto in cur_deptos loop
+        
+        v_total_salarios := 0;
+        select sum(salary) into v_total_salarios from employees where department_id = depto.department_id;
+        if v_depto_id = depto.department_id then   
+        depto_encontrado := true;
+                dbms_output.put_line('DEPARTAMENTO: '||depto.department_name);
+                dbms_output.put_line('  Total de sueldos: '||v_total_salarios);
+                dbms_output.put_line('');
+                
+        end if;
+
+            for emp in cur_emp loop
+                if emp.department_id = (depto.department_id) then
+                
+                    dbms_output.put_line('      Empleado(a)       : '||emp.first_name||' '||emp.last_name);
+                    dbms_output.put_line('      Salario           : '||emp.salary);
+                        if emp.salary between 2000 and 4800 then
+                            dbms_output.put_line('      Salario + comision: '||emp.salary * v_arr_p(1));
+                            dbms_output.put_line('-----------------------------------------------');
+                        elsif emp.salary between 5000 and 8800 then
+                            dbms_output.put_line('      Salario + comision: '||emp.salary * v_arr_p(2));
+                            dbms_output.put_line('-----------------------------------------------');
+                        elsif emp.salary > 8800 then
+                            dbms_output.put_line('      Salario + comision: '||emp.salary * v_arr_p(3));
+                            dbms_output.put_line('-----------------------------------------------');
+                        end if;
+                    
+                    emp_encontrado := true; 
+                end if;
+            end loop;
+        
+            if not emp_encontrado then
+                dbms_output.put_line('No Hay Empleados');
+            end if;
+    
+    end loop;
+    
+    if not depto_encontrado then 
+        raise depto_exception;
+    end if;
+    
+    exception
+    when depto_exception then
+    dbms_output.put_line('Error: Departmento no encontrado');
+end;

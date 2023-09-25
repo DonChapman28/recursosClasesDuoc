@@ -1,0 +1,41 @@
+-- EJECUTAR COMO ADMIN
+-- GRANT EXECUTE ON DBMS_CLOUD TO HR;
+-- CREATE DIRECTORY DIR_FOTOS_CLIENTES AS 'DIR_FOTOS_CLIENTES';
+-- GRANT READ,WRITE ON DIRECTORY DIR_FOTOS_CLIENTES TO HR;
+
+-- DESDE HR
+BEGIN
+  DBMS_CLOUD.CREATE_CREDENTIAL(
+  credential_name=>'CRED_BLOB',
+  username=>'oracleidentitycloudservice/nombre@duocuc.cl', 
+  password=>'453asjhfl4236');
+END;
+
+-- Ubicar/Enviar foto a directorio
+BEGIN
+  DBMS_CLOUD.GET_OBJECT(
+  credential_name=>'CRED_BLOB',
+  object_uri=>'https://objectstorage.sa-santiago-1.oraclecloud.com/p/KcWnbmmcixiDmssTtxZd_s1QWZTcZmmc2egdmmAQe_4mL8XdaDdrScnLCWhnCL5C/n/axxtivdcgleo/b/bucket-fotos-clientes/o/1.png',
+  directory_name=>'DIR_FOTOS_CLIENTES');
+END;
+
+BEGIN
+  DBMS_CLOUD.GET_OBJECT(
+  credential_name=>'CRED_BLOB',
+  object_uri=>'https://objectstorage.sa-santiago-1.oraclecloud.com/p/AEX6xYCjvSbqApMeA99-Rzb1D_ZFpaR38hcnhw878qijKIcWEafv2P1KuAMxpDpj/n/axxtivdcgleo/b/bucket-fotos-clientes/o/2.png',
+  directory_name=>'DIR_FOTOS_CLIENTES');
+END;
+
+-- Crear tabla para almacenar las fotos de un directorio
+CREATE TABLE CLIENTE
+(
+    cod_cliente NUMBER(1) CONSTRAINT PK_CLIENTE PRIMARY KEY,
+    foto BLOB DEFAULT EMPTY_BLOB()
+);
+
+INSERT INTO CLIENTE(cod_cliente) VALUES(1);
+INSERT INTO CLIENTE(cod_cliente) VALUES(2);
+
+
+
+

@@ -1,0 +1,107 @@
+actividad cursor
+***SIN RECORD
+
+declare
+
+cursor cur_dato_empleado is
+    select emp.employee_id,emp.first_name||' '||emp.last_name,emp.hire_date,
+        job.job_title,emp.salary,jef.first_name||' '||jef.last_name,dep.department_name, trunc(months_between(sysdate,emp.hire_date) / 12,1),
+        emp.salary * trunc(months_between(sysdate,emp.hire_date) / 12,1) / 100,
+        emp.salary * trunc(months_between(sysdate,emp.hire_date) / 12,1) / 100 + emp.salary
+    from employees emp
+
+        join jobs job on job.job_id = emp.job_id
+        join departments dep on dep.department_id = emp.department_id
+        join employees jef on emp.manager_id = jef.employee_id;
+    
+    v_id number(4);
+    v_nombre varchar2(80);
+    v_fecha_contrato date;
+    v_cargo varchar2(50);
+    v_sueldo number(12);
+    v_jefa varchar2(80);
+    v_departamento varchar2(80);
+    v_años_trabajados number(7,3);
+    v_bono number (10);
+    v_sueldo_final number(12);
+begin
+    open cur_dato_empleado;
+    loop
+        fetch cur_dato_empleado into v_id, v_nombre, v_fecha_contrato,v_cargo,v_sueldo,
+                                        v_jefa,v_departamento,v_años_trabajados,v_bono,v_sueldo_final;
+        ---exit when cur_dato_empleado%rowcount > 5;
+        exit when cur_dato_empleado%notfound;
+        DBMS_OUTPUT.PUT_LINE('DATOS CALCULO BONIFICACION EXTRA DE SUELDO');
+        DBMS_OUTPUT.PUT_LINE('ID: '||v_id);
+        DBMS_OUTPUT.PUT_LINE('Nombre: '||v_nombre);
+        DBMS_OUTPUT.PUT_LINE('Fecha contrato: '||v_fecha_contrato);
+        DBMS_OUTPUT.PUT_LINE('Cargo: '||v_cargo);
+        DBMS_OUTPUT.PUT_LINE('Sueldo: '||v_sueldo);
+        DBMS_OUTPUT.PUT_LINE('Jefe: '||v_jefa);
+        DBMS_OUTPUT.PUT_LINE('Departamento: '||v_departamento);
+        DBMS_OUTPUT.PUT_LINE('Años trabajados: '||v_años_trabajados);
+        DBMS_OUTPUT.PUT_LINE('Bono: '||v_bono);
+        DBMS_OUTPUT.PUT_LINE('Sueldo Final: '||v_sueldo_final);
+        DBMS_OUTPUT.PUT_LINE('-------------------------------------------');
+        
+    end loop;
+    
+    close cur_dato_empleado;
+end;
+
+-------------------------
+*** CON RECORD
+declare
+
+cursor cur_dato_empleado is
+    select emp.employee_id,emp.first_name||' '||emp.last_name,emp.hire_date,
+        job.job_title,emp.salary,jef.first_name||' '||jef.last_name,dep.department_name, trunc(months_between(sysdate,emp.hire_date) / 12,1),
+        emp.salary * trunc(months_between(sysdate,emp.hire_date) / 12,1) / 100,
+        emp.salary * trunc(months_between(sysdate,emp.hire_date) / 12,1) / 100 + emp.salary
+    from employees emp
+
+        join jobs job on job.job_id = emp.job_id
+        join departments dep on dep.department_id = emp.department_id
+        join employees jef on emp.manager_id = jef.employee_id;
+        
+    type tipo_reg_empleado is record
+    (v_id number(4),
+    v_nombre varchar2(80),
+    v_fecha_contrato date,
+    v_cargo varchar2(50),
+    v_sueldo number(12),
+    v_jefa varchar2(80),
+    v_departamento varchar2(80),
+    v_años_trabajados number(7,3),
+    v_bono number (10),
+    v_sueldo_final number(12));
+    
+    reg_empleado  tipo_reg_empleado;
+    
+    
+begin
+    open cur_dato_empleado;
+    loop
+        fetch cur_dato_empleado into reg_empleado;
+        ---exit when cur_dato_empleado%rowcount > 5;
+        exit when cur_dato_empleado%notfound;
+        DBMS_OUTPUT.PUT_LINE('DATOS CALCULO BONIFICACION EXTRA DE SUELDO');
+        DBMS_OUTPUT.PUT_LINE('ID: '||reg_empleado.v_id);
+        DBMS_OUTPUT.PUT_LINE('Nombre: '||reg_empleado.v_nombre);
+        DBMS_OUTPUT.PUT_LINE('Fecha contrato: '||reg_empleado.v_fecha_contrato);
+        DBMS_OUTPUT.PUT_LINE('Cargo: '||reg_empleado.v_cargo);
+        DBMS_OUTPUT.PUT_LINE('Sueldo: '||reg_empleado.v_sueldo);
+        DBMS_OUTPUT.PUT_LINE('Jefe: '||reg_empleado.v_jefa);
+        DBMS_OUTPUT.PUT_LINE('Departamento: '||reg_empleado.v_departamento);
+        DBMS_OUTPUT.PUT_LINE('Años trabajados: '||reg_empleado.v_años_trabajados);
+        DBMS_OUTPUT.PUT_LINE('Bono: '||reg_empleado.v_bono);
+        DBMS_OUTPUT.PUT_LINE('Sueldo Final: '||reg_empleado.v_sueldo_final);
+        DBMS_OUTPUT.PUT_LINE('-------------------------------------------');
+        
+    end loop;
+    
+    close cur_dato_empleado;
+end;
+
+
+

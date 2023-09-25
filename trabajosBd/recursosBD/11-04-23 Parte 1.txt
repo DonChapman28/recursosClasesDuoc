@@ -1,0 +1,85 @@
+DECLARE
+    TYPE type_emp_record IS RECORD
+    (
+        apellido   VARCHAR2(25),
+        cargo    VARCHAR2(10),
+        salario      NUMBER(10)
+    );
+    
+    reg_emp  type_emp_record;
+BEGIN
+    reg_emp.apellido := 'Morales';
+    reg_emp.cargo := 'Developer';
+    reg_emp.salario := '1200000';
+    dbms_output.put_line('Apellido: '||reg_emp.apellido);
+    dbms_output.put_line('Cargo: '||reg_emp.cargo);
+    dbms_output.put_line('Salario: '||reg_emp.salario);
+END;
+
+
+DECLARE
+    TYPE type_emp_record IS RECORD
+    (
+        apellido   VARCHAR2(25),
+        cargo    VARCHAR2(10),
+        salario      NUMBER(10)
+    );
+    
+    reg_emp  type_emp_record;
+BEGIN
+    SELECT last_name, job_id, salary
+    INTO reg_emp.apellido, reg_emp.cargo, reg_emp.salario
+    FROM employees WHERE employee_id = 120;
+    
+    dbms_output.put_line('Apellido: '||reg_emp.apellido);
+    dbms_output.put_line('Cargo: '||reg_emp.cargo);
+    dbms_output.put_line('Salario: '||reg_emp.salario);
+END;
+
+DECLARE
+    TYPE type_emp_record IS RECORD
+    (
+        nombre      VARCHAR2(25),
+        apellido    VARCHAR2(25),
+        cargo       VARCHAR2(10),
+        salario     NUMBER(10)
+    );
+    
+    reg_emp  type_emp_record;
+BEGIN
+    SELECT first_name, last_name, job_id, salary
+    INTO reg_emp
+    FROM employees WHERE employee_id = 123;
+    
+    dbms_output.put_line('Nombre: '||reg_emp.nombre);
+    dbms_output.put_line('Apellido: '||reg_emp.apellido);
+    dbms_output.put_line('Cargo: '||reg_emp.cargo);
+    dbms_output.put_line('Salario: '||reg_emp.salario);
+END;
+
+
+DECLARE       
+    v_fila_depto  departments%ROWTYPE;
+BEGIN
+    -- SELECT *
+    SELECT department_id, department_name, location_id, manager_id    
+    INTO v_fila_depto
+    FROM departments 
+    WHERE department_id = 160;
+    
+    dbms_output.put_line('Id: '||v_fila_depto.department_id);
+    dbms_output.put_line('Department Name: '||v_fila_depto.department_name);
+    dbms_output.put_line('Location Id: '||v_fila_depto.location_id);
+    dbms_output.put_line('Manager Id: '||v_fila_depto.manager_id);
+END;
+
+DECLARE       
+    v_fila_depto  departments%ROWTYPE;
+BEGIN
+    v_fila_depto.department_id := 500;
+    v_fila_depto.department_name := 'Desarrollo';
+    v_fila_depto.location_id := null;
+    v_fila_depto.manager_id := null;
+    
+    INSERT INTO departments VALUES v_fila_depto;
+END;

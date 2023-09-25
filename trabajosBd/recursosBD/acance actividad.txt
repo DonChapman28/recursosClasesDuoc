@@ -1,0 +1,14 @@
+select * from cliente
+select * from tarjeta_cliente
+select * from transaccion_tarjeta_cliente
+select * from tipo_transaccion_tarjeta
+
+select cl.numrun,cl.dvrun,tcl.nro_tarjeta,tcl.nro_transaccion,tcl.fecha_transaccion,tip.nombre_tptran_tarjeta
+from cliente cl
+join tarjeta_cliente tcl on cl.numrun = tcl.numrun
+terminar joins
+
+,ttc.nro_tarjeta,ttc.nro_transaccion,ttc.fecha_transaccion,tpt.nombre_tptran_tarjeta
+
+102 avance
+103 s avance

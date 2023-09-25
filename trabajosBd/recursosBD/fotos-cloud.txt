@@ -1,0 +1,43 @@
+https://objectstorage.sa-santiago-1.oraclecloud.com/p/M4pe3ey99Ki-egHPYm7qh3N_UMRfrkaWd8kx0iF_apq8jlqRCbU8-F-UJ67QRZ1d/n/ax1jrwzenwlw/b/bucket-fotos-clientes/o/1.png
+
+https://objectstorage.sa-santiago-1.oraclecloud.com/p/fSn4v8BKflpY7ctQRrhpsrx8Omtxa2t4APu1Btq-aIRFLWaOVKQrShRszg45jcMN/n/ax1jrwzenwlw/b/bucket-fotos-clientes/o/2.png
+
+https://objectstorage.sa-santiago-1.oraclecloud.com/p/2SDeVUJv9bKjww2pnIouZAEWqovDUfEWQBTAMfyeSOfsxUFD8XZDa2RXTr_-Zx0E/n/ax1jrwzenwlw/b/bucket-fotos-clientes/o/3.jpg
+
+oracleidentitycloudservice/eme.rojas@duocuc.cl
+
+i2vBISRnrjd9(gJZbb1<
+
+U]wW3h9wNT]lJLw8j:{(**
+
+BEGIN
+  DBMS_CLOUD.CREATE_CREDENTIAL(
+  credential_name=>'CRED_BLOB',
+  username=>'oracleidentitycloudservice/eme.rojas@duocuc.cl', 
+  password=>'fiSU8<HVY71Gq+k]d:B5'); 
+END;
+
+-- Ubicar/Enviar foto a directorio
+BEGIN
+  DBMS_CLOUD.GET_OBJECT(
+  credential_name=>'CRED_BLOB',
+  object_uri=>'https://objectstorage.sa-santiago-1.oraclecloud.com/p/VBFNMBqkcUBhPvBj_3yomRgmN1zZbQ2o63uCKZv0Uk0RWQDOkwlYqFYFtPOpPDwO/n/ax1jrwzenwlw/b/bucket-fotos-clientes/o/3.png',
+  directory_name=>'DIR_FOTOS_CLIENTES');
+END;
+
+BEGIN
+  DBMS_CLOUD.GET_OBJECT(
+  credential_name=>'CRED_BLOB',
+  object_uri=>'https://objectstorage.sa-santiago-1.oraclecloud.com/p/M4pe3ey99Ki-egHPYm7qh3N_UMRfrkaWd8kx0iF_apq8jlqRCbU8-F-UJ67QRZ1d/n/ax1jrwzenwlw/b/bucket-fotos-clientes/o/1.png',
+  directory_name=>'DIR_FOTOS_CLIENTES');
+END;
+
+-- Crear tabla para almacenar las fotos de un directorio
+CREATE TABLE CLIENTE
+(
+    cod_cliente NUMBER(1) CONSTRAINT PK_CLIENTE PRIMARY KEY,
+    foto BLOB DEFAULT EMPTY_BLOB()
+);
+
+INSERT INTO CLIENTE(cod_cliente) VALUES(1);
+INSERT INTO CLIENTE(cod_cliente) VALUES(2);

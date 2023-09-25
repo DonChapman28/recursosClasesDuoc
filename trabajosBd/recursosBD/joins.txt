@@ -1,0 +1,61 @@
+self join:
+para la misma tabla
+
+nonequijoin:
+busca expresiones que unan 2 tablas que no tengan como conectar
+between o <,>
+
+select e.first_name, e.salary, j.job_title, j.min_salary, j.max_salary
+from employees e
+join jobs j
+on e.salary > j.max_salary;
+
+usamos los salarios pa unir las tablas
+
+left outer join:
+para mostrar datos que quedan fuera de la tabla izquierda por la consulta
+
+select e.first_name, d.department_id
+		
+from employees e left outer join departments d
+    (tabla left)               (tabla right)
+
+on e.department_id = d.department_id;
+
+right outer join;
+para mostrar datos que quedan fuera de la tabla derecha por la consulta
+
+select e.first_name, d.department_id
+from employees e right outer join departments d
+    (tabla left)               (tabla right)
+
+on e.department_id = d.department_id;
+
+full outer join:
+para mostrar datos que quedan fuera de las 2 tablas por la consulta
+
+select nvl(e.first_name,'SIN EMPLEADOS'), nvl(to_char(d.department_id),'sin departamento')
+from employees e full outer join departments d
+on e.department_id = d.department_id;
+
+cross join:
+busca todas las combinaciones posibles
+
+unir mas de 2 tablas con join/on
+
+select emp.first_name, dep.department_name, loc.street_address, loc.city, cou.country_name
+from employees emp
+join departments dep on emp.department_id = dep.department_id
+join locations loc on dep.location_id = loc.location_id
+join countries cou on loc.country_id = cou.country_id;
+
+unir mas de 2 tablas con join/using
+
+select emp.first_name, dep.department_name, loc.street_address, loc.city, cou.country_name
+from employees emp
+join departments dep using(department_id)
+join locations loc using (location_id)
+join countries cou using (country_id);
+
+
+

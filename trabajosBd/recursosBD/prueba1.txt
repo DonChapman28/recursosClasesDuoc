@@ -1,0 +1,76 @@
+NOMBRES: FELIPE TORRES
+	 EMERSON ROJAS
+
+Pegar solución Caso 1:
+
+select rut_cliente,
+        nombre||' '||apellido_p||' '||apellido_m as Nombre,
+        fecha_baja,
+        round((months_between(fecha_baja , sysdate) / 12 * -1),1) as años,
+        concat('+56',telefono) as TELEFONO
+from cliente
+WHERE fecha_baja IS NOT NULL;	
+
+--------------------------------------------------------------------------------------------------------------------------------------------
+
+Pegar solución Caso 2:
+
+select nombre||' '||apellido_p||' '||apellido_m as NOMBRE,
+       (case when lower(substr(apellido_p,1,1)) = 'a' or lower(substr(apellido_p,1,1)) = 'b' or
+                    lower(substr(apellido_p,1,1)) = 'c' or lower(substr(apellido_p,1,1)) = 'd' or
+                    lower(substr(apellido_p,1,1)) = 'e' then 'Lunes 20 de septiembre'
+              when lower(substr(apellido_p,1,1)) = 'f' or lower(substr(apellido_p,1,1)) = 'g' or
+                    lower(substr(apellido_p,1,1)) = 'h' or lower(substr(apellido_p,1,1)) = 'i' or
+                    lower(substr(apellido_p,1,1)) = 'j' then 'Martes 21 de septiembre'
+              when lower(substr(apellido_p,1,1)) = 'k' or lower(substr(apellido_p,1,1)) = 'l' or
+                    lower(substr(apellido_p,1,1)) = 'm' or lower(substr(apellido_p,1,1)) = 'n' or
+                    lower(substr(apellido_p,1,1)) = 'ñ' then 'Miercoles 22 de septiembre'
+              when lower(substr(apellido_p,1,1)) = 'o' or lower(substr(apellido_p,1,1)) = 'p' or
+                    lower(substr(apellido_p,1,1)) = 'q' or lower(substr(apellido_p,1,1)) = 'r' or
+                    lower(substr(apellido_p,1,1)) = 's' then 'Jueves 23 de septiembre'
+                    else 'Viernes 24 de septiembre' end) "REUNION",
+       lower(substr(nombre,1,2)||'.'||apellido_p||substr(apellido_m,-1,1)) as USUARIO, 
+        substr(REPLACE(rut_ejecutivo,'.',''),1,7)as CLAVE
+FROM ejecutivo
+order by apellido_p asc;
+
+---------------------------------------------------------------------------------------------------------------------------------------------
+
+Pegar solución Caso 3:
+
+select rut_ejecutivo,
+        nombre,
+        apellido_p,
+        apellido_m,
+        fecha_contrato,
+        round((months_between(fecha_contrato , sysdate) / 12 * -1),2) as años,
+        lower(substr(nombre,1,2)||'.'||apellido_p||substr(apellido_m,-1,1)||'@bvvo.cl') as CORREO,
+        (case when trunc((months_between(fecha_contrato , sysdate) / 12 * -1)) <1 then 'NO APLICA'
+            when trunc((months_between(fecha_contrato , sysdate) / 12 * -1)) >=1 and
+                trunc((months_between(fecha_contrato , sysdate) / 12 * -1)) <9 then 'MEDIO SUELDO'
+            when trunc((months_between(fecha_contrato , sysdate) / 12 * -1)) >=9 and
+                trunc((months_between(fecha_contrato , sysdate) / 12 * -1)) <12 then 'UN SUELDO'
+            when trunc((months_between(fecha_contrato , sysdate) / 12 * -1)) >=12 and
+                trunc((months_between(fecha_contrato , sysdate) / 12 * -1)) <15 then 'DOS SUELDOS'
+            when trunc(months_between(fecha_contrato , sysdate) / 12 * -1) > 15 then 'TRES SUELDOS'
+            end) "AGUINALDO"
+from ejecutivo
+order by round((months_between(fecha_contrato , sysdate) / 12 * -1),2)desc;
+
+
+
+
+
+PREGUNTAS
+
+Respuesta 1:
+
+El objetivo del reporte es mostrar la informacion de manera ordenada los años trabajados correspondientes a cada trabajador
+y en base de esta informacion dar un aguinaldo para subir la motivacion de los trabajadores
+
+
+Respuesta 2:
+
+La informacion que se requiere para resolver el problema es la fecha de contratacion y la fecha actual para asi
+sacar el promedio de años trabajados y asi ver cuanto es el tipo de bono que le toca a cada trabajador
+

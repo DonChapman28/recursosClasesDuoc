@@ -1,0 +1,353 @@
+SELECT * FROM employees;     -- selecciona toda la tabla empleado
+
+SELECT employee_id, first_name,last_name from employees; --selecciona solo las columnas id,nombre y segundo nombre de empleado
+
+SELECT employee_id, first_name,last_name from employees where employee_id = 100; -- selecciona solo las columnas id,nombre y segundo nombre de empleado donde su id sea 100
+
+SELECT salary, salary * 2 as multiplicacion from employees; --selecciona la columna salary de la tabla salary y a demas le agrega otra columna con salay * 2 y a demas le cambia el nombre a la columna por multiplicacion
+
+select salary, salary * 2 as multiplicacion, salary / 2 as divicion from employees; -- lo mismo que la anterior pero se le agrega otra columna dividiendo en 2
+
+select first_name||last_name from employees; --concatena dos columnas
+
+select DISTINCT job_id from employees; -- si los datos se repiten, los omite dejando solo 1 en representacion
+
+select * from employees order by salary asc; -- ordena la columna salario de forma ascendente
+
+select * from employees order by salary desc; -- ordena el salario de forma descendente
+
+select * from employees order by commission_pct NULLS LAST; de la columna commission_pct, toma todos los nulls y los envia al final de la columna
+
+SELECT salary from employees WHERE salary BETWEEN 5000 AND 6000 order by salary asc; -- el operador BETWEEN busca los empleados que ganen entre 5000 y 6000
+
+SELECT salary from employees WHERE salary IN (3000,4000,6000); --OPERADOR IN busca todos los salarios que sean 3000,4000,6000
+
+SELECT first_name from employees WHERE first_name like 'A%'; busca a todos los empleados que su nombre comienza con la letra A
+
+SELECT first_name from employees WHERE first_name like '%a'; busca a todos los empleados que su nombre termina con la letra A
+
+SELECT first_name from employees WHERE first_name like '%a%'; busca a todos los empleados que su nombre tenga entre medio la letra A
+
+SELECT first_name from employees WHERE first_name like '__a%'; busca a todos los empleados que en su nombre, la tercera letra sea una a
+
+select employee_id from employees where employee_id = &id_emp; -- busca al empleado con la id que yo le indique por teclado
+
+OPERADORES: < > , = , !=, <= , >=, BETWEEN, IN , LIKE
+
+SELECT lower('HOLA') FROM dual; -- funcion que permite poner todo en minuscula
+
+SELECT UPPER('hola') FROM dual; -- funcion que permite poner todo en mayuscula
+
+SELECT INITCAP('hola') FROM dual; -- funcion que permite poner solo la primera letra en mayuscula
+
+SELECT substr('macancosapo',3,5) FROM dual; funcion que muestra solo los caracteres que van desde la posicion 3 a la 5
+
+SELECT TRIM('              hola           ') FROM dual; -- funcion que elimina solo los espacios en blanco del texto
+
+SELECT RTRIM('              hola           ') FROM dual; -- funcion que elimina los espacios en blanco de la derecha
+
+SELECT LTRIM('              hola           ') FROM dual; -- funcion que elimina los espacios en blanco de la izquierda
+
+SELECT INSTR('CARACOL','O') FROM dual; -- funcion que permite buscar el caracter que nosotros queramos dentro de un dato, por ejemplo la letra O y nos dice en que posicion se encuentra
+
+SELECT replace('CARACOL','A','O') FROM dual; -- remplaza la letra que nosotros queramos del texto para remplazarla por otra, en este caso se remplaza la letra A por la O
+
+SELECT concat('hola','hola buenas tardes') FROM dual; -- concatena
+
+SELECT lpad('hola','10','x') FROM dual; -- rellena 10 caracteres con x a la izquierda tomando en cuenta que hola ya usa 4 espacios
+
+SELECT rpad('hola','10','x') FROM dual; -- rellena 10 caracteres con la x a la derecha tomando en cuenta que hola ya usa 4 espacios
+
+select length(first_name) from employees; -- cuenta la cantidad de caracteres que tienen los datos de una tabla
+
+
+**********NUMEROS************
+
+
+SELECT round(884.23, 1) FROM dual; redondea la parte decimal de un numero, en este ejemplo me deja solo 1 decimal
+
+SELECT trunc(987.567) FROM dual; -- trunca el decimal
+
+SELECT mod(10,2) FROM dual; -- funcion que retorna el mod
+
+SELECT sysdate as "fecha del servidor" FROM dual; -- fecha actual
+
+SELECT  MONTHS_BETWEEN('01-12-2021','01-02-2022') FROM dual; -- diferencia entre dos fechas en meses
+
+SELECT  NEXT_DAY('01-12-2021','DOMINGO') FROM dual; -- ME MUESTRA LA FECHA QUE CORRESPONDE AL SIGUIENTE DOMINGO
+
+SELECT  LAST_DAY('01-12-2021') FROM dual; el ultimo dia del mes
+
+SELECT  add_months('01-12-2021',6) FROM dual; -- suma 6 meses a la fecha
+
+SELECT  extract(YEAR from hire_date) FROM employees; extrae el año de una fecha, se puede hacer con DAY y MOUNTH tambien
+
+select '123123',to_number('123123') from dual; -- transforma el valor a numero
+
+select to_date('15/08/2020') from dual; -- transforma a fecha
+
+select to_char(1234) from dual; -- transforma el valor en caracter
+
+select NVL(NULL,'ES NULO') from dual; -- trata los valores nulos y retorna lo que nosotros queramos(ambas variables deben ser del mismo tipo)
+
+select commission_pct, NVL2(commission_pct,'A','B') from employees; -- remplaza A cuando no es nulo, y B cuando es nulo
+
+select nullif('A','B') from dual; -- cuando A Y B son iguales, retorna un null, sino retorna A
+
+select COALESCE(null,null,null,0) from dual; -- retorna el primer valor no null que se le ingresa, en este caso retorna 0, por que es el primer valor no null
+
+
+
+
+
+
+SELECT last_name, salary,
+case 
+when salary <= 5000 then 'bajo'
+when salary <= 10000 then 'medio'
+when salary <= 20000 then 'bueno'      -- IF EN SQL UTILIZANDO case,when,then,else,end.. las condiciones se pueden concatenar con and y or
+else 'excelente'
+end as "calificacion del salario"
+from employees
+where department_id in (60,90)
+order by salary desc;
+
+
+
+
+***********************EXPERIENCIA2****************************
+
+
+select min(salary) from employees; devuelve el salario minimo de toda la columna,se puede utilizar para texto y fecha
+
+select max(salary) from employees; devuelve el salario maximo de toda la columna,se puede utilizar para texto y fecha
+
+select avg(salary) from employees; devuelve el promedio de toda la columna,se puede utilizar para texto y fecha
+
+select sum(salary) from employees; devuelve la suma de toda la columna,se puede utilizar para texto y fecha
+
+select count(salary) from employees; cuenta todos los valores de la columnas, si se usa con el valor de una columna no considera los valores nulos
+
+select count(distinct department_id) from employees; con distinct no considera los valores repetidos ni nulos
+
+select avg(NVL(commission_pct,0)) from employees; -- para sacar el promedio de las comisiones, teniendo en cuenta los nulos, se transforman todos los null en 0
+
+select department_id,avg(salary) from employees group by department_id; -- agrupa todos los departamentos y calcula el promedio del salario de cada departamento
+
+*******************tipo where pero con group by****************
+
+select department_id,max(salary) from employees having max(salary) > 8000 group by department_id; -- muestra los salarios maximos de cada departamento que sea mayor a 8000
+
+*****************join con on y con using*****************
+
+select employees.first_name,employees.last_name,departments.department_name from employees join departments on employees.department_id = departments.department_id; -- el join me permite juntar tablas para utilizar las columnas de ambas que coincidan con la condicion del on
+
+select employees.first_name,employees.last_name,departments.department_name from employees join departments using(department_id);-- lo mismo que la consulta anterior pero en ves de on se usa using
+
+select employees.first_name,employees.last_name,departments.department_name from employees join departments using(department_id) where department_name in('Administration'); --me trae solamente a los de administracion
+
+select employees.first_name,employees.last_name,departments.department_name from employees join departments on departments.department_id = employees.department_id where department_name in('Administration'); -- lo mismo que la anterior pero utilizando el on
+
+
+SELECT e.employee_id "ID EMPLEADO", 
+e.first_name || ' ' || e.last_name "NOMBRE EMPLEADO",
+e.manager_id "ID JEFE", m.first_name || ' ' || m.last_name "NOMBRE JEFE"FROM employees e JOIN 
+employees m ON (e.manager_id = m.employee_id)ORDER BY e.employee_id;                          -- esta es una tabla relacionada a si misma, y esta consulta nos permite identificar a los empleados y su respectivo jefe
+
+
+SELECT man.first_name || ' ' || man.last_name "NOMBRE JEFE",COUNT(emp.employee_id) "EMPLEADOS A SU CARGO"FROM employees emp JOIN employees man ON 
+(emp.manager_id = man.employee_id)GROUP BY man.first_name, 
+man.last_name ORDER BY "EMPLEADOS A SU CARGO" DESC, man.last_name;                            -- esta consulta nos permite ver cuantos empleados tiene a su cargo cada jefe
+
+select * from employees e left join  departments d on e.department_id = d.department_id; -- me trae todos los datos de la tabla izquierda sin discriminar que cumplan con la condicion on, en este caso de empleado
+
+select * from employees e right join  departments d on e.department_id = d.department_id; -- lo mismo que la anterior pero con la tabla derecha de departments
+
+select * from employees e full join  departments d on e.department_id = d.department_id; -- trae a todos de ambas tablas sin discriminar de la tabla derecha e izquierda que cumplan con la condicion
+
+select e.first_name,e.last_name,dep.department_name,con.country_name,loc.street_address from employees e 
+join departments dep on e.department_id = dep.department_id
+join locations loc on dep.location_id = loc.location_id
+join countries con on loc.country_id = con.country_id;                                   --join on a mas de una tabla
+
+
+select * 
+from employees 
+where salary > (select salary from employees where last_name = 'Abel');  -- sub consulta para ver quien tiene salario mayor a Abel
+
+select * 
+from employees 
+where salary = (select max(salary)from employees); -- sub consulta para ver quienes ganan el salario maximo
+
+select * 
+from employees 
+where salary > (select max(salary)from employees where department_id = 30); -- sub consulta para ver quienes ganan mas que los trabajadores del departamento 30
+
+select * 
+from employees 
+where salary > any (select salary from employees where department_id = 30); -- sub consulta para ver quienes de los trabajadores que ganen mas que cualquiera del departamento 30
+
+select * 
+from employees 
+where salary > all (select salary from employees where department_id = 30); -- sub consulta que trae a los trabajadores que ganen mas que todos los trabajadores del departamento 30
+
+
+select employee_id,first_name,last_name,salary,department_id
+from employees
+where salary >12000
+UNION
+select employee_id,first_name,last_name,salary,department_id  -- UNION hace que ambas tablas traigan todos los datos de ambas consultas, sin duplicados
+from employees
+where department_id = 90;
+
+select employee_id,first_name,last_name,salary,department_id
+from employees
+where salary >12000
+UNION ALL
+select employee_id,first_name,last_name,salary,department_id  -- UNION hace que ambas tablas traigan todos los datos de ambas consultas, pero esta vez si trae las filas duplicadas
+from employees
+where department_id = 90;
+
+select employee_id,first_name,last_name,salary,department_id
+from employees
+where salary >12000
+UNION INTERSECT
+select employee_id,first_name,last_name,salary,department_id  -- UNION hace que ambas tablas traigan todos los datos de ambas consultas, pero esta vez si trae las filas duplicadas
+from employees
+where department_id = 90;
+
+select employee_id,first_name,last_name,salary,department_id
+from employees
+where salary >12000
+INTERSECT
+select employee_id,first_name,last_name,salary,department_id  -- INTERSECT retorna solo los datos que se repiten en ambas consultas
+from employees
+where department_id = 90;
+
+select employee_id,first_name,last_name,salary,department_id
+from employees
+where salary >12000
+MINUS
+select employee_id,first_name,last_name,salary,department_id  -- MINUS retorna las filas de la primera consulta que no esten en la segunda consulta
+from employees
+where department_id = 90;
+
+****************************************
+select * from departments;
+
+savepoint insertado1;
+
+insert into departments values (280,'ventas',null,null);         --EJEMPLO DE SAVEPOINT,ROLLBACK Y COMMIT
+
+update departments set department_name = 'Administraciòn' where department_id = 10;
+
+ROLLBACK TO SAVEPOINT insertado1;
+
+COMMIT;
+
+ROLLBACK; --ESTE ROLLBACK SOLITO, DEVUELVE AL ULTIMO COMMIT QUE SE HIZO SIN IMPORTAR LOS SAVEPOINT
+
+**************************************************************
+VISTAS
+
+create view vw_departamentos as select * from departments; -- crea la vista de departments, si cambio datos en la vista, tambien cambian en la tabla, y si cambio datos en la tabla, se cambian tambien en la vista
+
+insert into vw_departamentos values (290,'testing',null,null); -- se pueden insertar datos a la vista
+
+drop view [nombre_vista]; para eliminar una vista
+
+
+CREATE OR REPLACE VIEW v_dept30
+AS SELECT *
+FROM employees
+WHERE department_id=30
+WITH CHECK OPTION CONSTRAINT control_v_dept30; -- crea un control en la vista para no insertar empleados que no pertenezcan al departamento 30
+
+whit read only
+
+
+CREATE SEQUENCE seq_dept_deptid
+INCREMENT BY 10
+START WITH 280
+MAXVALUE 9999
+NOCACHE
+NOCYCLE;               -- crea una secuencia, y se pueden utilizar para insertarla en una tabla
+
+select seq_dept_deptid.nextval from dual; -- muestra el siguiente valor de la secuencia
+
+select seq_dept_deptid.currval from dual; -- muestra el valor actual de la secuencia
+
+create synonym sny_deptos for departments; crea un sinonimo para la tabla, el cual se puede usar para un select o cualquier cosa
+
+**********************PRIVILEGIOS
+
+grant select employees to HR; -- dandole permiso a hr para hacer select a la tabla employees
+
+GRANT CREATE SESSION TO CUENTA1; -- dar privilegio a una cuenta para iniciar sesion
+
+GRANT CREATE TABLE TO CUENTA1; -- dar privilegio a una cuenta para crear tablas
+
+GRANT SELECT ON HR.employees to cuenta2; da privilegios a cuenta2 para consultar con select a la tabla employees de hr
+
+GRANT UPDATE ON HR.employees to cuenta2; da privilegios a cuenta 2 para poder hacer update sobre la tabla employees de hr
+
+GRANT SELECT,UPDATE ON HR.EMPLOYEES TO CUENTA2 WHIT GRANT OPTION; -- da privilegio a cuenta 2 para poder hacer update,select y para poder dar privilegios a otras cuentas
+
+CREATE ROLE ROL_BASICO; -- CREA UN ROL
+
+GRANT CREATE SEQUENCE, CREATE SYNONYM,CREATE SESSION TO ROL_BASICO; -- le da privilegios al rol_basico para crear secuencias,crear sinonimos e uniciar sesion
+
+GRANT ROL_BASICO TO CUENTA1; -- LE OTORGA EL ROL CON SUS PRIVILEGIOS A CUENTA1
+
+SELECT * FROM USER_ROLE_PRIVS; --MUESTRA QUE ROL TIENE ASIGNADO LA CUENTA DEL CUAL SE EJECUTA
+
+SELECT * FROM USER_SYS_PRIVS; --MUESTRA TODOS LOS PRIVILEGIOS QUE TIENE LA CUENTA
+
+REVOKE CREATE SESSION FROM ROL_BASICO; -- LE QUITA EL PRIVILEGIO DE INICIAR SESION A ROL_BASICO
+
+CREATE USER ANITA
+IDENTIFIED BY "Oracle-15640735"
+DEFAULT TABLESPACE "DATA"
+TEMPORARY TABLESPACE "TEMP"
+QUOTA UNLIMITED ON "DATA";
+GRANT CREATE SESSION TO ANITA;
+GRANT RESOURCE TO ANITA;
+ALTER USER ANITA DEFAULT ROLE "RESOURCE"; -- crea usuario en la base de datos, con su espacio en disco, contraseña y sus privilegios
+
+CREATE TABLESPACE ctacte_datos
+DATAFILE 'C:\oraclexe\datos_sistema_ctacte\datos_ctacte01.dbf' SIZE 50M
+EXTENT MANAGEMENT LOCAL
+SEGMENT SPACE MANAGEMENT AUTO;                                           --crea un  table space en el disco, para ser administrado por los usuarios, en este caso de 50M
+
+
+CREATE PROFILE profile_prueba LIMIT
+CONNECT_TIME 2
+IDLE_TIME 30
+FAILED_LOGIN_ATTEMPTS 3
+PASSWORD_LOCK_TIME 1; ---       crea un perfil para luego asignarselo a un usuario, el tiempo que puede estar conectado, las veces que puede fallar al logearse etc
+
+
+ALTER USER ANITA PROFILE PROFILE_PRUEBA; -- LE ASIGNA UN PERFIL AL USUARIO ANITA
+
+ALTER USER ANITA ACCOUNT UNLOCK; --DESBLOQUEA UNA CUENTA QUE ESTA BLOQUEADA POR EQUIVOCARSE DE CONTRASEÑA
+
+
+ALTER PROFILE PROFILE_PRUEBA LIMIT
+CONNECT_TIME 1; --                  CAMBIA EL PERFIL PARA QUE ESTE SE DESCONECTE DESPUES DE 1 MINUTO CONECTADA
+
+************************************************************************************************************
+select * from employees where last_name = 'Smith'; -- crea una select   
+                                                     
+explain plan for                                     
+select * from employees where last_name = 'Smith'; -- guarda el plan que se ejecuto para esa select  
+                                                     
+select * from table(dbms_xplan.display);          --despliega los recursos que le costo al equipo procesar esa select      
+*****************************************************************************************************************
+
+create index ix_emp_last_name on empleados(last_name); -- crea un indice para una columna de la tabla empleados
+
+create index ix_emp_last_name_salary on empleados(last_name,salary); -- se pueden crear indices compuestos a mas de una columna
+
+create index ix_emp_last_name_length on empleados(length(last_name)); -- se pueden crear indices con funciones
+
+create unique index xi_uq_emp_email on empleados(email); -- indice especial para valores que no se pueden repetir

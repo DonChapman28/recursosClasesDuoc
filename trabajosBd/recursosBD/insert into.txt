@@ -1,0 +1,7 @@
+para insertar tablas no puedo repetir las claves primarias o id
+
+
+para insertar se debe respetar las columnas y sus datos
+
+insert into employees
+values (207,'felipe','torres','ftorres','22334455',sysdate,'IT_PROG',2500,null,null,10);

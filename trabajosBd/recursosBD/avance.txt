@@ -1,0 +1,14 @@
+cursor dinamico
+
+declare
+    v_cursor_emp sys_refcursor;
+    v_emp employees%rowtype;
+begin
+    open v_cursor_emp for select * from employees;
+    loop
+        fetch v_cursor_emp into v_emp;
+        exit when v_cursor_emp%notfound;
+        dbms_output.put_line('Nombre :'||v_emp.first_name||' '||v_emp.last_name);
+    end loop;
+    close v_cursor_emp;
+end;

@@ -1,0 +1,41 @@
+DECLARE
+    CURSOR cur_detalles IS select cl.numrun run,cl.dvrun dv,ttc.nro_tarjeta nro_tarjeta,ttc.nro_transaccion nro_transaccion,ttc.fecha_transaccion fecha,
+                    tip.nombre_tptran_tarjeta nombre_transaccion,ttc.monto_total_transaccion monto_total,0
+                    from cliente cl
+                    join tarjeta_cliente tc on tc.numrun = cl.numrun
+                    join transaccion_tarjeta_cliente ttc on ttc.nro_tarjeta = tc.nro_tarjeta
+                    join tipo_transaccion_tarjeta tip on tip.cod_tptran_tarjeta = ttc.cod_tptran_tarjeta;
+   
+    CURSOR cur_resumen IS select extract(month from ttc.fecha_transaccion)||extract(year from ttc.fecha_transaccion) mes_anno
+                        ,tip.nombre_tptran_tarjeta nombre_transaccion,sum(ttc.monto_total_transaccion)monto_total
+                        from tipo_transaccion_tarjeta tip
+                        join transaccion_tarjeta_cliente ttc  on ttc.cod_tptran_tarjeta  = tip.cod_tptran_tarjeta
+                        group by  extract(month from ttc.fecha_transaccion)||extract(year from ttc.fecha_transaccion)
+                        ,tip.nombre_tptran_tarjeta
+                        order by mes_anno asc;
+    
+    v_det detalle_aporte_sbif%rowtype;
+    v_res resumen_aporte_sbif%rowtype;
+
+
+    
+
+BEGIN
+    FOR detalle IN cur_detalles LOOP
+        
+        if detalle.nombre_transaccion = 'Avance en Efectivo' or detalle.nombre_transaccion = 'Súper Avance en Efectivo' then
+        
+        fetch cur_detalles into v_det;
+        ---exit when cur_dato_empleado%rowcount > 5;
+        exit when cur_detalles%notfound;
+        insert into detalle_aporte_sbif values(v_det.numrun,v_det.dvrun,v_det.nro_tarjeta,v_det.nro_transaccion,v_det.fecha_transaccion
+                                                ,v_det.tipo_transaccion,v_det.monto_transaccion,
+                                                v_det.aporte_sbif);
+    
+
+        
+        DBMS_OUTPUT.PUT_LINE('-------------------------------------------');
+        end if;
+    
+    END LOOP;
+END;

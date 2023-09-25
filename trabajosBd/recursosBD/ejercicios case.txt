@@ -1,0 +1,105 @@
+actividad 2 experiencia 2
+
+caso 1:
+
+select c.numrun||'-'||c.dvrun "RUT CLIENTE",
+    c.pnombre||' '||c.snombre||' '||c.appaterno||' '||c.apmaterno "NOMBRE CLIENTE",
+    p.nombre_prof_ofic as "PROFESION/OFICIO",(case when extract(month from c.fecha_nacimiento) = 1 then '0'||extract(day from c.fecha_nacimiento)||' DE ENERO'
+                    when extract(month from c.fecha_nacimiento) = 2 then '0'||extract(day from c.fecha_nacimiento)||' DE FEBRERO'
+                    when extract(month from c.fecha_nacimiento) = 3 then '0'||extract(day from c.fecha_nacimiento)||' DE MARZO '
+                    when extract(month from c.fecha_nacimiento) = 4 then '0'||extract(day from c.fecha_nacimiento)||' DE ABRIL'
+                    when extract(month from c.fecha_nacimiento) = 5 then '0'||extract(day from c.fecha_nacimiento)||' DE MAYO'
+                    when extract(month from c.fecha_nacimiento) = 6 then '0'||extract(day from c.fecha_nacimiento)||' DE JUNIO'
+                    when extract(month from c.fecha_nacimiento) = 7 then '0'||extract(day from c.fecha_nacimiento)||' DE JULIO'
+                    when extract(month from c.fecha_nacimiento) = 8 then '0'||extract(day from c.fecha_nacimiento)||' DE AGOSTO'
+                    when extract(month from c.fecha_nacimiento) = 9 then '0'||extract(day from c.fecha_nacimiento)||' DE SEPTIEMBRE'
+                    when extract(month from c.fecha_nacimiento) = 10 then '0'||extract(day from c.fecha_nacimiento)||' DE OCTUBRE'
+                    when extract(month from c.fecha_nacimiento) = 11 then '0'||extract(day from c.fecha_nacimiento)||' DE NOVIEMBRE'
+                    when extract(month from c.fecha_nacimiento) = 12 then '0'||extract(day from c.fecha_nacimiento)||' DE DICIEMBRE'
+		    end) CUMPLEAÑOS
+from cliente c
+join profesion_oficio p
+on c.cod_prof_ofic = p.cod_prof_ofic
+where extract(month from fecha_nacimiento) = 9
+order by extract(day from (c.fecha_nacimiento));
+
+si ingreso el 6 sale el siguiente mes
+
+caso2:
+
+select c.numrun||'-'||c.dvrun "RUT CLIENTE",
+        c.pnombre||' '||c.snombre||' '||c.appaterno||' '||c.apmaterno "NOMBRE CLIENTE",
+        cr.monto_solicitado "MONTO SOLICITADO", (cr.monto_solicitado / 100000)*1200 as "TOTAL PESOS TODOSUMA"
+        
+from cliente c
+join credito_cliente cr
+on c.nro_cliente = cr.nro_cliente
+order by cr.monto_solicitado;
+
+caso 3:
+select extract(month from a.fecha_otorga_cred)||extract(year from a.fecha_otorga_cred) as "MES TRANSACCION",
+        b.nombre_credito as "TIPO CREDITO",
+        a.monto_solicitado as "MES SOLICITADO CREDITO",
+            (case when a.monto_solicitado >=100000 and a.monto_solicitado <= 1000000 then (a.monto_solicitado / 100) * 1
+             when a.monto_solicitado >=1000001 and a.monto_solicitado <= 2000000 then (a.monto_solicitado / 100) * 2 
+             when a.monto_solicitado >=2000001 and a.monto_solicitado <= 4000000 then (a.monto_solicitado / 100) * 3
+             when a.monto_solicitado >=4000001 and a.monto_solicitado <= 6000000 then (a.monto_solicitado / 100) * 4
+             when a.monto_solicitado >=7000000 then (a.monto_solicitado / 100) * 7
+        end)"APORTE A LA SIBF"
+from credito_cliente a
+join credito b
+on a.cod_credito = b.cod_credito
+where extract(year from a.fecha_otorga_cred) = 2021;
+no esta terminado
+
+caso 4:
+select c.numrun||'-'||c.dvrun "RUN CLIENTE",
+        c.pnombre||' '||c.snombre||' '||c.appaterno||' '||c.apmaterno "NOMBRE CLIENTE",
+        p.monto_total_ahorrado "MONTO TOTAL AHORRADO",
+        (case when p.monto_total_ahorrado >=100000 and p.monto_total_ahorrado <=1000000 then 'BRONCE'
+              when p.monto_total_ahorrado >=1000001 and p.monto_total_ahorrado <=4000000 then 'SILVER'
+              when p.monto_total_ahorrado >=4000001 and p.monto_total_ahorrado <=8000000 then 'GOLD'
+              when p.monto_total_ahorrado >=8000001 and p.monto_total_ahorrado <=15000000 then 'PLATINUM'
+              when p.monto_total_ahorrado >=15000000 then 'DIAMOND'
+        end)"CATEGORIA CLIENTE"
+        
+
+from cliente c
+join producto_inversion_cliente p
+on c.nro_cliente = p.nro_cliente
+order by c.appaterno, p.monto_total_ahorrado desc;
+
+caso 5:
+select extract(year from sysdate)"FECHA",
+             to_char(c.numrun,'00G000G000')||'-'||c.dvrun "RUN CLIENTE",
+             initcap(c.pnombre ||' '|| substr(c.snombre,1,1) || '. ' || c.appaterno || ' ' || c.apmaterno) "NOMBRE CLIENTE",
+             count(p.cod_prod_inv)"TOTAL PRODUCTOS INVERSION AFECTOS IMPTO",
+             p.monto_total_ahorrado
+from producto_inversion_cliente p
+join cliente c on p.nro_cliente = c.nro_cliente
+group by extract(year from sysdate), to_char(c.numrun,'00G000G000')||'-'||c.dvrun,
+                initcap(c.pnombre ||' '|| substr(c.snombre,1,1) || '. ' || c.appaterno || ' ' || c.apmaterno),
+                p.monto_total_ahorrado,c.appaterno
+order by c.appaterno asc;
+
+caso 6:
+select  to_char(c.numrun,'00G000G000')||'-'||c.dvrun "RUN CLIENTE",
+    initcap(c.pnombre ||' '||c.snombre|| ' ' || c.appaterno || ' ' || c.apmaterno) "NOMBRE CLIENTE",
+    count(cc.nro_cliente)"TOTAL CREDITO",sum(cc.monto_solicitado) AS "MONTO TOTAL CREDITOS"
+    
+from cliente c
+join credito_cliente cc
+on c.nro_cliente = cc.nro_cliente
+group by to_char(c.numrun,'00G000G000')||'-'||c.dvrun,
+    initcap(c.pnombre ||' '||c.snombre|| ' ' || c.appaterno || ' ' || c.apmaterno),
+    cc.nro_cliente 
+order by "RUN CLIENTE" asc;
+
+
+
+
+
+
+
+
+

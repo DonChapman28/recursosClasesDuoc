@@ -1,0 +1,21 @@
+--select salary,
+       --salary * 0.07 as descuento_salud,
+       --salary * 12 "por año"
+--from employees;      
+
+select first_name||' '||last_name,
+       salary sueldo,
+       salary * 0.07 as descuento_salud,
+       salary * 12 "por año"
+from employees
+order by descuento_salud desc;
+
+--select first_name|| ' gana ' || salary ||
+        --' dolares, y trabaja en el depto nro ' || department_id
+--from employees;
+
+--select DISTINCT department_id from employees;
+
+select first_name, salary, commission_pct
+from employees
+order by commision_pct

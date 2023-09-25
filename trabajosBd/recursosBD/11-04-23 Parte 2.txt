@@ -1,0 +1,61 @@
+/*
+    Construir una rutina que permita determinar los siguientes datos de un empleado:
+    id, nombre, apellido, salario, fecha de contrato, nombre departamento, y ciudad
+    
+    -Utilice una variable compuesta para almacenar los datos recuperados.
+    -Utilice una variable bind para buscar a cada empleado por su ID.
+    -Utilice DBMS_OUTPUT para imprimir los datos.
+*/
+
+DECLARE
+    TYPE type_table_emp IS TABLE OF 
+        employees.last_name%TYPE
+    INDEX BY PLS_INTEGER;
+             
+    v_tabla_apellidos type_table_emp;
+BEGIN
+    v_tabla_apellidos(1) := 'Morales';
+    v_tabla_apellidos(2) := 'Quitana';
+    v_tabla_apellidos(3) := 'Robles';
+    dbms_output.put_line(v_tabla_apellidos(1));
+    dbms_output.put_line(v_tabla_apellidos(2));
+    dbms_output.put_line(v_tabla_apellidos(3));
+END; 
+
+
+DECLARE
+    TYPE type_table_deptos IS TABLE OF
+        departments%ROWTYPE 
+    INDEX BY PLS_INTEGER;
+
+    v_tabla_deptos  type_table_deptos;
+BEGIN
+    SELECT * 
+    INTO v_tabla_deptos(1) 
+    FROM  departments
+    WHERE department_id = 100;
+
+    dbms_output.put_line(v_tabla_deptos(1).department_id);
+    dbms_output.put_line(v_tabla_deptos(1).department_name);
+    dbms_output.put_line(v_tabla_deptos(1).location_id);
+    dbms_output.put_line(v_tabla_deptos(1).manager_id);
+END;
+
+DECLARE
+    TYPE type_table_deptos IS TABLE OF
+        departments%ROWTYPE 
+    INDEX BY PLS_INTEGER;
+
+    v_tabla_deptos  type_table_deptos;
+BEGIN
+    SELECT * 
+    BULK COLLECT INTO v_tabla_deptos 
+    FROM  departments;
+
+    dbms_output.put_line('Total filas: ' || v_tabla_deptos.count());
+    
+    dbms_output.put_line(v_tabla_deptos(2).department_id);
+    dbms_output.put_line(v_tabla_deptos(2).department_name);
+    dbms_output.put_line(v_tabla_deptos(2).location_id);
+    dbms_output.put_line(v_tabla_deptos(2).manager_id);
+END;

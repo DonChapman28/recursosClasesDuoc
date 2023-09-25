@@ -1,0 +1,90 @@
+create or replace package ventapackage as
+  procedure registrarventa(
+    p_cliente_id in number,
+    p_vendedor_id in number,
+    p_fecha_venta in timestamp,
+    p_medicamentos in sys.odcinumberlist,
+    p_cantidades in sys.odcinumberlist
+  );
+end ventapackage;
+
+
+create or replace package body ventapackage as
+  procedure registrarventa(
+    p_cliente_id in number,
+    p_vendedor_id in number,
+    p_fecha_venta in timestamp,
+    p_medicamentos in sys.odcinumberlist,
+    p_cantidades in sys.odcinumberlist
+  ) is
+    v_venta_id number;
+    v_total_venta number := 0;
+  begin
+    
+    insert into venta (venta_id, cliente_id, vendedor_id, fecha_venta, total)
+    values (seq_idventa.nextval, p_cliente_id, p_vendedor_id, p_fecha_venta, 0);
+
+    
+    select venta_id into v_venta_id
+    from venta
+    where venta_id = (select max(venta_id) from venta);
+
+    
+    for i in 1..p_medicamentos.count loop
+      insert into detalle_venta (venta_id, medicamento_id, cantidad)
+      values (v_venta_id, p_medicamentos(i), p_cantidades(i));
+    end loop;
+
+    
+    select sum(m.precio * dv.cantidad)
+    into v_total_venta
+    from detalle_venta dv
+    join medicamento m on dv.medicamento_id = m.medicamento_id
+    where dv.venta_id = v_venta_id;
+
+    
+    update venta
+    set total = v_total_venta
+    where venta_id = v_venta_id;
+
+    commit;
+  exception
+    when others then
+      rollback;
+      raise;
+  end registrarventa;
+end ventapackage;
+
+
+begin
+  ventapackage.registrarventa(
+    p_cliente_id => 1,
+    p_vendedor_id => 1,
+    p_fecha_venta => to_timestamp('10:00:00', 'hh24:mi:ss'),
+    p_medicamentos => sys.odcinumberlist(1, 2, 3),
+    p_cantidades => sys.odcinumberlist(2, 1, 3)
+  );
+  commit;
+end;
+
+create or replace trigger trg_ventas
+after insert or update or delete on venta
+for each row
+begin
+    if inserting then
+        update medicamento set stock = stock - :new.stock  where stock = 1;
+        insert into detalle_venta values (venta_id,medicamento_id,cantidad);
+
+    end if;
+
+end;
+
+delete from venta;
+
+delete from detalle_venta;
+
+select * from venta;
+
+select * from detalle_venta;
+
+select * from medicamento;

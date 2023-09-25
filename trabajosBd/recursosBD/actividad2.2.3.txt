@@ -1,0 +1,63 @@
+
+
+declare
+
+cursor cur_dato_deuda is
+     select pac.pac_run,pac.dv_run,pac.pnombre||' '||pac.snombre||' '||pac.apaterno||' '||pac.amaterno, 
+       ate.ate_id,pag.fecha_venc_pago,pag.fecha_pago, pag.fecha_pago - pag.fecha_venc_pago,esp.nombre,
+        nvl((pag.fecha_pago - pag.fecha_venc_pago) * (case 
+        when esp.esp_id = 100 or esp.esp_id = 300 then 1200
+        when esp.esp_id = 200 then 1300
+        when esp.esp_id = 400 or esp.esp_id = 900 then 1700
+        when esp.esp_id = 500 or esp.esp_id = 600 then 1900
+        when esp.esp_id = 700 then 1100
+        when esp.esp_id = 1100 then 2000
+        when esp.esp_id = 1400 then 2300 end
+        ),0) as "Monto Multa"
+       
+        from paciente pac
+join atencion ate on ate.pac_run = pac.pac_run
+join pago_atencion pag on pag.ate_id = ate.ate_id
+join especialidad esp on esp.esp_id = ate.esp_id;
+       
+        
+    type tipo_reg_cliente is record
+    (v_run number(11),
+     v_dv varchar2(1),
+     v_nombre varchar2(120),
+     v_ate_id number(4),
+    v_fecha_venc_pago date,
+    v_fecha_pago date,
+    v_dias_morosidad number(3),
+    v_especialidad varchar2(80),
+    v_monto_multa number(15,3) default 0);
+    
+    reg_cliente  tipo_reg_cliente;
+    
+    
+begin
+    open cur_dato_deuda;
+    loop
+        fetch cur_dato_deuda into reg_cliente;
+        ---exit when cur_dato_empleado%rowcount > 5;
+        exit when cur_dato_deuda%notfound;
+        insert into pago_moroso values(reg_cliente.v_run,reg_cliente.v_dv,
+                                            reg_cliente.v_nombre,reg_cliente.v_ate_id,reg_cliente.v_fecha_venc_pago,
+                                            reg_cliente.v_fecha_pago,reg_cliente.v_dias_morosidad,reg_cliente.v_especialidad,
+                                            reg_cliente.v_monto_multa);
+    
+
+        DBMS_OUTPUT.PUT_LINE(reg_cliente.v_run);
+        DBMS_OUTPUT.PUT_LINE('-------------------------------------------');
+        
+    end loop;
+    
+    close cur_dato_deuda;
+end;
+
+
+
+usar los indices del arrego para llamarlo
+select * from pago_moroso
+
+rollback

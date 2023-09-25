@@ -1,0 +1,69 @@
+select pac.pac_run,pac.dv_run,pac.pnombre||' '||pac.snombre||' '||pac.apaterno||' '||pac.amaterno, 
+       ate.ate_id,pag.fecha_venc_pago,pag.fecha_pago, pag.fecha_pago - pag.fecha_venc_pago,esp.nombre,
+        (case when esp.nombre = 117 then '20000'
+        when esp.nombre = ''then '25000'
+        when esp.nombre = 119 then '30000'
+        when esp.nombre = 120 then '35000'
+        when esp.nombre = 119 then '30000'
+        when esp.nombre = 120 then '35000'
+        when esp.nombre = 212 then '40000' end
+        ) as "VALOR_TOTAL_MOVIL"
+       
+        from paciente pac
+join atencion ate on ate.pac_run = pac.pac_run
+join pago_atencion pag on pag.ate_id = ate.ate_id
+join especialidad esp on esp.esp_id = ate.esp_id;
+
+select * from especialidad
+
+--------------------------------------------------------
+
+declare
+
+cursor cur_dato_deuda is
+    select pac.pac_run,pac.dv_run,pac.pnombre||' '||pac.snombre||' '||pac.apaterno||' '||pac.amaterno, 
+        ate.ate_id,pag.fecha_venc_pago,pag.fecha_pago
+        from paciente pac
+        join atencion ate on ate.pac_run = pac.pac_run
+        join pago_atencion pag on pag.ate_id = ate.ate_id;
+        
+    type tipo_reg_empleado is record
+    (v_run number(11),
+    v_dv varchar2(1),
+    v_nombre varchar2(120),
+    v_ate_id number(3),
+    v_fecha_venc_pago date,
+    v_fecha_pago date,
+    v_dias_morosidad number(3),
+    v_especialidad varchar2(80),
+    v_monto_multa number(15,3));
+    
+    reg_empleado  tipo_reg_empleado;
+    
+    
+begin
+    open cur_dato_deuda;
+    loop
+        fetch cur_dato_deuda into reg_empleado;
+        ---exit when cur_dato_empleado%rowcount > 5;
+        exit when cur_dato_deuda%notfound;
+        DBMS_OUTPUT.PUT_LINE('DATOS CALCULO BONIFICACION EXTRA DE SUELDO');
+        DBMS_OUTPUT.PUT_LINE('ID: '||reg_empleado.v_id);
+        DBMS_OUTPUT.PUT_LINE('Nombre: '||reg_empleado.v_nombre);
+        DBMS_OUTPUT.PUT_LINE('Fecha contrato: '||reg_empleado.v_fecha_contrato);
+        DBMS_OUTPUT.PUT_LINE('Cargo: '||reg_empleado.v_cargo);
+        DBMS_OUTPUT.PUT_LINE('Sueldo: '||reg_empleado.v_sueldo);
+        DBMS_OUTPUT.PUT_LINE('Jefe: '||reg_empleado.v_jefa);
+        DBMS_OUTPUT.PUT_LINE('Departamento: '||reg_empleado.v_departamento);
+        DBMS_OUTPUT.PUT_LINE('Años trabajados: '||reg_empleado.v_años_trabajados);
+        DBMS_OUTPUT.PUT_LINE('Bono: '||reg_empleado.v_bono);
+        DBMS_OUTPUT.PUT_LINE('Sueldo Final: '||reg_empleado.v_sueldo_final);
+        DBMS_OUTPUT.PUT_LINE('-------------------------------------------');
+        
+    end loop;
+    
+    close cur_dato_deuda;
+end;
+
+
+

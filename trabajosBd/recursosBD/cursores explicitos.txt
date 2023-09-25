@@ -1,0 +1,144 @@
+cursor explicito
+
+declare
+    cursor cur_datos_emp is select first_name, salary ,salary * 2 as salario from employees;
+    v_reg_datos_emp cur_datos_emp%rowtype;
+begin
+    open cur_datos_emp;
+    loop
+        fetch cur_datos_emp into v_reg_datos_emp;
+        exit when cur_datos_emp%notfound;
+        dbms_output.put_line(v_reg_datos_emp.first_name);
+        dbms_output.put_line(v_reg_datos_emp.salary);
+        dbms_output.put_line(v_reg_datos_emp.salario);
+    end loop;
+    close cur_datos_emp;
+end;
+---------------------------------------
+cursor mas facil (implicito)
+
+begin 
+    for loc in (select * from locations)
+    loop
+    
+        dbms_output.put_line(loc.city);
+    end loop;
+end;
+---------------------------------------
+cursor con parametro
+
+***ejemplo 1:***
+
+declare
+    cursor cur_locations(p_id_loc number) is
+        select * from locations where location_id = p_id_loc;
+
+begin 
+    for loc in cur_locations(3000)
+    loop
+    
+        dbms_output.put_line(loc.city||' '||loc.street_address);
+    end loop;
+end;
+
+***ejemplo 2 :***
+
+declare
+    cursor cur_locations(p_id_pais char) is
+        select * from locations where country_id = p_id_pais;
+
+begin 
+    for loc in cur_locations('CA')
+    loop
+    
+        dbms_output.put_line(loc.city||' '||loc.street_address);
+    end loop;
+end;-----------------------------------
+cursor con mas de 1 parametro
+
+
+declare
+    cursor cur_locations is select * from locations;
+    cursor cur_deptos is select * from departments;
+
+begin 
+    for depto in cur_deptos
+    loop
+        dbms_output.put_line(depto.department_name);
+        for  loc in cur_locations
+        loop
+            dbms_output.put_line(loc.street_address);
+        end loop;
+    end loop;
+end;
+
+***ejemplo para enlazar(tipo join)***
+
+
+declare
+    cursor cur_locations is select * from locations;
+    cursor cur_deptos is select * from departments;
+
+begin 
+    for depto in cur_deptos
+    loop
+        dbms_output.put_line(depto.department_name);
+        for  loc in cur_locations
+        loop
+            if loc.location_id = depto.location_id then
+                dbms_output.put_line(loc.street_address);
+            end if;
+        end loop;
+    end loop;
+end;
+
+***ejercicio***
+
+declare
+    cursor cur_emp is select * from employees;
+    cursor cur_deptos is select * from departments;
+
+begin 
+    for depto in cur_deptos
+    loop
+        dbms_output.put_line('Departamento :'||depto.department_name);
+        for emp in cur_emp
+        loop
+            if emp.department_id = depto.department_id then
+                
+                dbms_output.put_line('Empleado(a) :'||emp.first_name||' '||emp.last_name);
+            
+            end if;
+        end loop;
+            dbms_output.put_line('-------------------------------------');
+    end loop;
+end;
+
+***indicar cuando no hay empleado***
+
+DECLARE
+    CURSOR cur_emp IS SELECT * FROM employees;
+    CURSOR cur_deptos IS SELECT * FROM departments;
+
+    emp_encontrado boolean;
+
+BEGIN
+    FOR depto IN cur_deptos LOOP
+        emp_encontrado := false; 
+        dbms_output.put_line('Departamento: '||depto.department_name);
+        
+        FOR emp IN cur_emp LOOP
+            IF emp.department_id = depto.department_id THEN
+                dbms_output.put_line('Empleado(a): '||emp.first_name||' '||emp.last_name);
+                emp_encontrado := true; 
+            END IF;
+        END LOOP;
+        
+        IF NOT emp_encontrado THEN
+            dbms_output.put_line('No hay empleados');
+        END IF;
+        
+        dbms_output.put_line('-------------------------------------');
+       
+    END LOOP;
+END;

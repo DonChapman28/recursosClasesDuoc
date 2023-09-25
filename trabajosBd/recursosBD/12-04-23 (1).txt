@@ -1,0 +1,41 @@
+DECLARE
+    TYPE type_arr_paises IS VARRAY(4) OF VARCHAR2(30);
+    v_arr_paises type_arr_paises;
+BEGIN
+    v_arr_paises := type_arr_paises('Chile','Brasil','España','Francia');
+    
+    dbms_output.put_line(v_arr_paises(1));
+    dbms_output.put_line(v_arr_paises(2));
+    dbms_output.put_line(v_arr_paises(3));
+    dbms_output.put_line(v_arr_paises(4));
+END; 
+
+DECLARE
+    TYPE type_arr_paises IS VARRAY(4) OF VARCHAR2(30);
+    v_arr_paises type_arr_paises;
+    v_longitud NUMBER(10);
+BEGIN
+    v_arr_paises := type_arr_paises('Chile','Brasil','España','Francia');
+    v_arr_paises(2) := 'Portugal';       
+    v_longitud := v_arr_paises.count();
+    
+    for indice in 1..v_longitud loop
+        dbms_output.put_line(v_arr_paises(indice));
+    end loop;    
+END;
+
+
+DECLARE
+    TYPE type_arr_paises IS VARRAY(100) OF VARCHAR2(30);
+    v_arr_paises type_arr_paises;
+    v_longitud NUMBER(10);
+BEGIN
+    v_arr_paises := type_arr_paises('Chile','Brasil','España','Francia');
+    v_arr_paises(2) := 'Portugal';    
+    v_arr_paises.EXTEND;
+    v_arr_paises(5) := 'Holanda';    
+    v_longitud := v_arr_paises.count();    
+    for indice in 1..v_longitud loop
+        dbms_output.put_line(v_arr_paises(indice));
+    end loop;    
+END;

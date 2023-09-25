@@ -1,0 +1,60 @@
+declare
+
+cursor cur_dato_empleado is
+    select employee_id, e.first_name||' '||e.last_name, e.salary
+    from employees e;
+    
+    v_id number(3);
+    v_nombre varchar2(30);
+    v_salario number(8);
+
+begin
+    open cur_dato_empleado;
+    loop
+        fetch cur_dato_empleado into v_id, v_nombre, v_salario;
+        exit when cur_dato_empleado%rowcount < 10;
+        dbms_output.put_line(v_id);
+    end loop;
+    
+    close cur_dato_empleado;
+end;
+------------------------
+ otro ejemplo pero con mas weas xD cursor explicito
+declare
+
+cursor cur_dato_empleado is
+    select employee_id, e.first_name||' '||e.last_name, e.salary
+    from employees e order by employee_id;
+    
+    v_id number(3);
+    v_nombre varchar2(30);
+    v_salario number(8);
+
+begin
+    open cur_dato_empleado;
+    loop
+        fetch cur_dato_empleado into v_id, v_nombre, v_salario;
+        ---exit when cur_dato_empleado%rowcount > 5;
+        exit when cur_dato_empleado%notfound;
+        dbms_output.put_line(v_id||' '||v_nombre||'  '||v_salario);
+    end loop;
+    
+    close cur_dato_empleado;
+end;
+
+-----
+
+curosr implicito
+
+begin
+    for employee_rec in (select * from employees)
+    loop
+        dbms_output.put_line(employee_rec.first_name);
+        dbms_output.put_line(employee_rec.last_name);
+        dbms_output.put_line(employee_rec.salary);
+        dbms_output.put_line(employee_rec.hire_date);
+    end loop;
+end;
+------
+
+curosr explicito

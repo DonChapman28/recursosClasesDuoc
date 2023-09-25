@@ -1,0 +1,79 @@
+declare
+    type t_grab is record
+    (v_grab1 employees%rowtype);
+    v_mygrab t_grab;
+begin
+    select * into v_mygrab.v_grab1
+        from employees where employee_id = 100;
+        dbms_output.put_line(v_mygrab.v_grab1.first_name||' '||v_mygrab.v_grab1.last_name);
+end;
+
+%rowtype es para usar los datos de la tabla
+cuando se desea recuperar una fila con sentencia select *
+sentencias insert de filas y sentencia update
+---------------------------------------------------
+ejemplo 2
+
+crear tabla para usarla despues
+
+CREATE TABLE retired_emps (
+    empno NUMBER(6,0),
+    ename VARCHAR2(20 BYTE),
+    job VARCHAR2(20 BYTE),
+    mgr NUMBER(6,0),
+    hiredate DATE,
+    leavedate DATE,
+    sal NUMBER(8,2),
+    comm NUMBER(2,2),
+    deptno NUMBER(4,0)
+ );
+
+usar rowtype para sacar todos los datos de la select y luego insertar en la nueva tabla
+declare
+    v_employee_number number:=124;
+    v_emp_rec employees%rowtype;
+    
+begin
+    select * into v_emp_rec from employees
+    where employee_id = v_employee_number;
+    insert into retired_emps(empno,ename,job,mgr,
+                            hiredate,leavedate,sal,comm,deptno)
+    values(v_emp_rec.employee_id,v_emp_rec.last_name,v_emp_rec.job_id,
+            v_emp_rec.manager_id,v_emp_rec.hire_date,sysdate,v_emp_rec.salary,
+            v_emp_rec.commission_pct,v_emp_rec.department_id);
+end;
+
+select * from retired_emps
+----------------------------------
+insertando un registro utilizando %rowtype
+
+declare
+    v_employee_number number:=100;
+    v_emp_rec retired_emps%rowtype;
+    
+begin
+    select employee_id,last_name,job_id,manager_id,
+            hire_date,hire_date,salary,commission_pct,
+            department_id into v_emp_rec from employees
+    where employee_id = v_employee_number;
+    insert into retired_emps
+    values v_emp_rec;
+end;
+
+select * from retired_emps
+-----------
+actualizar (me tira error en el dml paralelo)
+declare
+    v_employee_number number:=124;
+    v_emp_rec retired_emps%rowtype;
+    
+begin
+    select * into v_emp_rec from retired_emps
+    where empno = v_employee_number;
+    v_emp_rec.leavedate := current_date;
+    update retired_emps set row = v_emp_rec where
+    empno = v_employee_number;
+end;
+
+
+

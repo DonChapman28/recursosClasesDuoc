@@ -1,0 +1,83 @@
+***CASO 1***:
+
+select cl.rut_cliente RUT,cl.fecha_alta,
+        round(sysdate-cl.fecha_alta) "DÍAS TRANSCURRIDOS" ,
+        upper(cl.nombre||' '||cl.apellido_p||' '||cl.apellido_m) NOMBRE,
+        count(reg.abono)ABONOS,count(reg.cargo)CARGOS
+from cliente cl
+join cuenta cu on cl.rut_cliente = cu.rut_cliente
+join cuenta_registros reg on cu.nro_cuenta = reg.nro_cuenta
+group by cl.rut_cliente,cl.fecha_alta,
+        upper(cl.nombre||' '||cl.apellido_p||' '||cl.apellido_m)
+order by bonos desc;
+----------------------------------------------------------------------------------------
+***CASO 2***:
+
+select cl.rut_cliente RUT,com.nombre, 
+        substr(extract(year from cl.fecha_alta),3) as "AÑOS INGRESO",
+        CONCAT('$',sum(reg.abono))AS "ABONOS",
+        nvl2(sum(reg.cargo),CONCAT('$',sum(reg.cargo)),'$0')AS "CARGOS",
+        nvl2(sum(reg.cargo),' ','X') as "SIN CARGOS"
+
+from cliente cl
+join comuna com on cl.id_comuna = com.id_comuna 
+join cuenta cu on cl.rut_cliente = cu.rut_cliente
+join cuenta_registros reg on cu.nro_cuenta = reg.nro_cuenta
+group by cl.rut_cliente, com.nombre, cl.fecha_alta
+ORDER BY "AÑOS INGRESO" DESC;
+-----------------------------------------------------------------------------------------
+***CASO 3***:
+
+select cl.rut_cliente,
+        upper(cl.nombre||' '||cl.apellido_p||' '||cl.apellido_m) CLIENTE,
+        tcr.descripcion,count(reg.rut_cliente)as "CUOTAS PAGADAS",
+        to_char((cre.monto),'0G000G000') as "MONTO CRÉDITO",
+        to_char(sum(reg.abono),'0G000G000') as "TOTAL ABONADO",
+        to_char(cre.monto - (sum(reg.abono)),'0G000G000')
+from cliente cl
+
+join credito cre on cl.rut_cliente = cre.rut_cliente
+join tipo_credito tcr on cre.id_tipo_credito = tcr.id_tipo_credito
+join credito_registros reg on cl.rut_cliente = reg.rut_cliente  
+
+group by cl.rut_cliente,
+        upper(cl.nombre||' '||cl.apellido_p||' '||cl.apellido_m),
+        tcr.descripcion,cre.monto
+having count(reg.rut_cliente)>(select avg(count(rut_cliente))
+from credito_registros
+
+group by credito_registros.rut_cliente)
+order by "TOTAL ABONADO" desc;
+----------------------------------------------------------------------------------------
+***CASO 4***:
+
+Proceso 1:
+
+create table temp_cliente as select cl.rut_cliente"RUT",
+	     upper(cl.nombre||' '||cl.apellido_p||' '||cl.apellido_m)"NOMBRE",
+             cl.domicilio,com.nombre"COMUNA",'CLIENTE' "TIPO CLIENTE"
+from cliente cl
+join comuna com on cl.id_comuna = com.id_comuna;
+
+select * 
+from temp_cliente
+
+Proceso 2:
+
+create table temp_ejecutivo as select rut_ejecutivo,
+       upper(nombre||' '||apellido_p||' '||apellido_m)"NOMBRE",
+       substr(dir_sucursal,1, instr(dir_sucursal,',')-1)"DOMICILIO",
+       substr(dir_sucursal, instr(dir_sucursal,',')+1)"COMUNA",
+       'EJECUTIVO'"TIPO"
+from ejecutivo
+
+select *
+from temp_ejecutivo
+
+Proceso 3:
+
+
+
+
+
+

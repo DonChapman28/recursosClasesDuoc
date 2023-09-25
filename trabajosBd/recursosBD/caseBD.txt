@@ -1,0 +1,32 @@
+actividad 2.3.2
+
+Felipe Torres
+Emerson Rojas
+
+
+caso 1:
+
+select to_char(numrun,'00G000G000')||'-'||dvrun "RUN CLIENTE",
+        initcap(pnombre||' '||snombre||' '||appaterno||' '||apmaterno) "NOMBRE CLIENTE",
+        (case when extract(month from fecha_nacimiento) = 1 then extract(day from fecha_nacimiento)||' DE ENERO'
+                    when extract(month from fecha_nacimiento) = 2 then extract(day from fecha_nacimiento)||' DE FEBRERO'
+                    when extract(month from fecha_nacimiento) = 3 then extract(day from fecha_nacimiento)||' DE MARZO '
+                    when extract(month from fecha_nacimiento) = 4 then extract(day from fecha_nacimiento)||' DE ABRIL'
+                    when extract(month from fecha_nacimiento) = 5 then extract(day from fecha_nacimiento)||' DE MAYO'
+                    when extract(month from fecha_nacimiento) = 6 then extract(day from fecha_nacimiento)||' DE JUNIO'
+                    when extract(month from fecha_nacimiento) = 7 then extract(day from fecha_nacimiento)||' DE JULIO'
+                    when extract(month from fecha_nacimiento) = 8 then extract(day from fecha_nacimiento)||' DE AGOSTO'
+                    when extract(month from fecha_nacimiento) = 9 then extract(day from fecha_nacimiento)||' DE SEPTIEMBRE'
+                    when extract(month from fecha_nacimiento) = 10 then extract(day from fecha_nacimiento)||' DE OCTUBRE'
+                    when extract(month from fecha_nacimiento) = 11 then extract(day from fecha_nacimiento)||' DE NOVIEMBRE'
+                    when extract(month from fecha_nacimiento) = 12 then extract(day from fecha_nacimiento)||' DE DICIEMBRE'
+		    end) CUMPLEAÑOS,su.direccion||'/'||r.nombre_region "Direccion sucursal/REGION SUCURSAL"
+            
+from cliente c
+join sucursal_retail su on c.cod_region = su.cod_region
+join region r on c.cod_region = r.cod_region
+where su.id_sucursal = &idsucursal and extract(month from c.fecha_nacimiento) = &fecha +1
+group by to_char(numrun,'00G000G000')||'-'||dvrun,
+        initcap(pnombre||' '||snombre||' '||appaterno||' '||apmaterno),
+        c.fecha_nacimiento,su.direccion,r.nombre_region
+order by c.fecha_nacimiento;

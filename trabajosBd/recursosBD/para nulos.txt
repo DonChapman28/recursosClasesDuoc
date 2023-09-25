@@ -1,0 +1,64 @@
+WHERE "la cosa" IS NOT NULL;(para despejar los nulos)
+
+AVG(): promedio
+MIN(): minimo
+MAX(): maximo
+SUM(): suma
+
+CONTAR
+select count(distinct department_id)
+from employees; se usa para contar y no cuenta los repetidos y nulos.
+
+PROMEDIO
+select avg(commission_pct), ***no considera nulos
+        avg(nvl(commission_pct, 0)) ***considera nulos
+from employees;
+
+PROMEDIO POR GRUPOS
+select department_id, AVG (salary) 
+from employees
+group by department_id; para agrupar y sacar promedios
+
+
+(ACTIVIDAD 1 EXPERIENCIA 2)
+select carreraid, count(alumnoid) total_alumnos, 
+            'Le corresponden ' ||'$'||
+            30200 * count(alumnoid) ||
+            ' del presupuesto total asignado para publicidad' monto_por_publicidad
+
+restriccion de grupos con having*max-min-count*
+
+from alumno
+group by carreraid
+order by total_alumnos desc;
+
+20.500 * alumno
+
+30.200
+-------------------------------------------------------------------------
+avance
+
+---ejercicio 1
+select carreraid, count(alumnoid) total_alumnos, 
+            'Le corresponden ' ||'$'||
+            30200 * count(alumnoid) ||
+            ' del presupuesto total asignado para publicidad' monto_por_publicidad
+from alumno
+group by carreraid
+order by total_alumnos desc;
+---ejercicio 2
+select carreraid, count(alumnoid)total
+from alumno
+group by carreraid
+having count(alumnoid)>4
+order by total;
+---ejercicio 3
+select run_jefe ,count(run_jefe) as "TOTAL DE EMPLEADOS A SU CARGO",
+        max(salario) as "SALARIO MAXIMO",
+        10 * (count(run_jefe))||'%'||'del Salario Maximo' as "PORCENTAJE DE BONIFICACION",
+        (max(salario)) * (count(run_jefe)) / 100 as BONIFICACION
+from empleado
+where run_jefe is not null
+group by run_jefe
+order by run_jefe asc;
+---ejercicio 4
